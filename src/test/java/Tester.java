@@ -1,5 +1,6 @@
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,25 +12,25 @@ import java.util.function.Supplier;
  * @author Nikita Fomichev fomichev.n@raidix.com
  *         Date: 06-May-17
  */
-public class Test {
+public class Tester {
 
     private List<List<String>> resultTable = new ArrayList<>();
-    private Map<String,Map<String,Long>> resultsTable = new HashMap<>();
+    private Map<String, Map<String, Long>> resultsTable = new HashMap<>();
 
     @DataProvider(name = "Drivers")
     public static Object[][] drivers() {
         return new Object[][]{
-                {DriverProvider.FIREFOX},
-                {DriverProvider.CHROME},
-                {DriverProvider.CHROME_HEADLESS},
-                {DriverProvider.PHATNOMJS},
-                {DriverProvider.HTMLUNIT}
+                {DriverProvider.FIREFOX, "FirefoxDriver"},
+                {DriverProvider.CHROME, "ChromeDriver"},
+                {DriverProvider.CHROME_HEADLESS, "ChromeDriverHeadless"},
+                {DriverProvider.PHATNOMJS, "PhantomJSDriver"},
+                {DriverProvider.HTMLUNIT, "HtmlUnitDriver"}
         };
     }
 
     // This test will run 4 times since we have 5 parameters defined
-    @org.testng.annotations.Test(dataProvider = "Drivers")
-    public void test(DriverProvider driverProvider) {
+    @Test(dataProvider = "Drivers")
+    public void test(DriverProvider driverProvider, String driverName) {
         WebDriver driver = driverProvider.getDriver();
 
         System.out.println(parseDriverName(driver.toString()));
@@ -43,7 +44,7 @@ public class Test {
         long endTime = startTime - System.currentTimeMillis();
     }
 
-    private String parseDriverName(String driverToString){
+    private String parseDriverName(String driverToString) {
         return driverToString.split(":")[0];
     }
 

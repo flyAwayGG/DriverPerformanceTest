@@ -1,6 +1,4 @@
 # Created by .ignore support plugin (hsz.mobi)
-### Java template
-*.class
 
 # BlueJ files
 *.ctxt
@@ -19,3 +17,4 @@ hs_err_pid*
 .idea/
 DriverPerformance.iml
 target/
+phantomjsdriver.log
