@@ -40,7 +40,8 @@ public enum DriverProvider {
     PHATNOMJS {
         public WebDriver getDriver() {
             DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
-            capabilities.setCapability("phantomjs.binary.path", "/home/nikita/phantomjs-2.1.1-linux-x86_64/bin/phantomjs");
+            capabilities.setCapability("phantomjs.binary.path", PHANTOMJS_BINARY);
+            capabilities.setJavascriptEnabled(true);
             return new PhantomJSDriver(capabilities);
         }
     },
@@ -50,7 +51,8 @@ public enum DriverProvider {
         }
     };
 
-    private final static String DRIVERS_PATH = "src/test/resources/drivers/";
+    private static final String DRIVERS_PATH = "src/test/resources/drivers/";
+    private static final String PHANTOMJS_BINARY = "/home/nikita/phantomjs-2.1.1-linux-x86_64/bin/phantomjs";
 
     public abstract WebDriver getDriver();
 
