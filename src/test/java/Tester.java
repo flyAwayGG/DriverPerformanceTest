@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -37,12 +38,12 @@ public class Tester {
 
         WebDriver driver = calc(driverProvider::getDriver,"Driver initialization");
 
-        calc(() -> driver.get("https://google.com/"),"get(String)");
+//        calc(() -> driver.get("https://google.com/"),"get(String)");
 //        calc(()->driver.findElement(By.cssSelector("")));
 
 
         //driver.getClient("file:///home/nikita/idea_projects/playground/index.html");
-        driver.get("file:///C:/Users/Nikita/playground/index.html");
+        driver.get("file:///home/nikita/DriverPerformanceTest/src/test/resources/playground/index.html");
         // Test 1
         String title = driver.getTitle();
         driver.findElement(By.id("answer1")).sendKeys(title);
@@ -84,19 +85,23 @@ public class Tester {
         // Test 11
         int greenBoxY = driver.findElement(By.id("greenbox")).getLocation().getY();
         int orangeBoxY = driver.findElement(By.id("orangebox")).getLocation().getY();
-        System.out.println(greenBoxY + ", " + orangeBoxY);
         String elementOnTop = orangeBoxY > greenBoxY ? "green" : "orange";
         driver.findElement(By.id("answer11")).sendKeys(elementOnTop);
 
         // Test 12
-        Dimension dimension = new Dimension(850, 650);
-        driver.manage().window().setSize(dimension);
+        /*
+          Headless Chrome failing
+          org.openqa.selenium.WebDriverException: unknown error: cannot get automation extension
+         from unknown error: page could not be found: chrome-extension://aapnijgdinlhnhlmodcfapnahmbfebeb/_generated_background_page.html
+         (Session info: headless chrome=59.0.3071.36)
+         (Driver info: chromedriver=2.29.461571 (8a88bbe0775e2a23afda0ceaf2ef7ee74e822cc5),platform=Linux 4.8.0-49-generic x86_64) (WARNING: The server did not provide any stacktrace information)
+         */
+
+        // Dimension dimension = new Dimension(850, 650);
+        // driver.manage().window().setSize(dimension);
 
         // Test 13
         Boolean elemIsHereDisplayed = driver.findElements(By.id("ishere")).size() > 0;
-//        Boolean elemIsHereDisplayed = (Boolean)(new WebDriverWait(driver, 10))
-//               .until(ExpectedConditions
-//                       .visibilityOfElementLocated(By.id("ishere")));
         String isDisplayed = elemIsHereDisplayed ? "yes" : "no";
         driver.findElement(By.id("answer13")).sendKeys(isDisplayed);
 
@@ -107,14 +112,17 @@ public class Tester {
 
         // Test 15
         driver.findElement(By.linkText("click then wait")).click();
-
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+//
+        WebDriverWait wait = new WebDriverWait(driver, 1,20);
          wait.until(
                 ExpectedConditions.visibilityOfElementLocated(By.linkText("click after wait")));
         driver.findElement(By.linkText("click after wait")).click();
 
         // Test 16
-        driver.switchTo().alert().accept();
+        /*
+         * Headless Browsers failing here
+         */
+//        driver.switchTo().alert().accept();
 
         // Test 17
         driver.findElement(By.id("submitbutton")).click();
@@ -122,9 +130,11 @@ public class Tester {
         // Check Result
         driver.findElement(By.id("checkresults")).click();
 
-
+        String results = driver.findElement(By.cssSelector("#showresults")).getText();
+        System.out.println(results);
 
         driver.quit();
+
         resultsTable.put(driverName,benchResult);
     }
 
