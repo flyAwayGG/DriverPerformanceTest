@@ -20,10 +20,10 @@ public enum DriverProvider {
     },
     CHROME {
         public WebDriver getDriver() {
+            System.setProperty("webdriver.chrome.driver", DRIVERS_PATH + "chromedriver");
+            
             ChromeOptions options = new ChromeOptions();
             options.setBinary("/usr/bin/google-chrome");
-            options.addArguments("--window-size=1200x600");
-            System.setProperty("webdriver.chrome.driver", DRIVERS_PATH + "chromedriver");
             return new ChromeDriver(options);
         }
     },
@@ -33,7 +33,7 @@ public enum DriverProvider {
 
             ChromeOptions options = new ChromeOptions();
             options.setBinary("/usr/bin/google-chrome");
-            options.addArguments("--headless", "--window-size=1200x600");
+            options.addArguments("--headless");
             return new ChromeDriver(options);
         }
     },
